@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hotel Booking Cancellation Prediction</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+<body>
+    <main class="container">
+        <p class="eyebrow">MACHINE LEARNING PROJECT</p>
+
+        <h1>Hotel Booking Cancellation Prediction</h1>
+
+        <p class="description">
+            Enter historical booking details to explore the model's
+            cancellation prediction.
+        </p>
+
+        <section class="card">
+            <h2>Booking Details</h2>
+
+            <p>
+                Complete all fields. Lead time is the number of days
+                between booking and arrival. Repeated guest:
+                0 = No, 1 = Yes.
+            </p>
+
+            <p>
+                Agent and company values are dataset IDs.
+                Select No_Agent or No_Company when not applicable.
+            </p>
+
+            {% if error %}
+                <div class="error" role="alert">{{ error }}</div>
+            {% endif %}
+
+            {% if result %}
+                <div class="result" role="status">
+                    <h2>{{ result.label }}</h2>
+                    <p>
+                        Estimated cancellation probability:
+                        <strong>{{ result.probability }}%</strong>
+                    </p>
+                    <p>This is a model estimate, not a guarantee.</p>
+                </div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('home') }}">
+                <div class="form-grid">
+                    {% for field in fields %}
+                        <div class="form-field">
+                            <label for="{{ field.name }}">
+                                {{ field.label }}
+                            </label>
+
+                            {% if field.options is not none %}
+                                <select
+                                    id="{{ field.name }}"
+                                    name="{{ field.name }}"
+                                    required
+                                >
+                                    <option value="">Select an option</option>
+
+                                    {% for option in field.options %}
+                                        <option
+                                            value="{{ option }}"
+                                            {% if form_values.get(field.name) == option %}
+                                                selected
+                                            {% endif %}
+                                        >
+                                            {{ option }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                                <input
+                                    type="number"
+                                    id="{{ field.name }}"
+                                    name="{{ field.name }}"
+                                    min="0"
+                                    step="1"
+                                    value="{{ form_values.get(field.name, '') }}"
+                                    required
+                                >
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit">Predict Cancellation</button>
+            </form>
+        </section>
+
+        <p class="note">
+            Educational project using historical hotel data.
+            Performance on present-day bookings has not been validated.
+        </p>
+    </main>
+</body>
+</html>
