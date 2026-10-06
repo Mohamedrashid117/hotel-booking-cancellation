@@ -182,3 +182,11 @@ Press Ctrl+C to stop the server.
 
 This interface demonstrates the historical-data model.
 It has not been validated for present-day booking decisions.
+
+## Application Preview
+
+### Interface — Part 1
+![Hotel booking interface, part 1](screenshots/app-preview.png)
+
+### Interface — Part 2
+![Hotel booking interface, part 2](screenshots/app-preview-1.png)
